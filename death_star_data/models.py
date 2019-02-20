@@ -3,8 +3,8 @@ from django.db import models
 # Create your models here.
 class Customer(models.Model):
     '''A Bangazon customer'''
-    firstName = models.CharField(max_length=50)
-    lastName = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
     phone = models.IntegerField(blank=False)
     active = models.BooleanField(default=False)
@@ -30,7 +30,7 @@ class Product(models.Model):
     description = models.TextField(blank=False, null=True)
     price = models.DecimalField(max_digits=7, decimal_places=2, blank=False)
     quantity = models.IntegerField(blank=False)
-    productType = models.ForeignKey(ProductType, on_delete=models.CASCADE, null=True)
+    product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, null=True)
     seller = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -42,7 +42,7 @@ class PaymentType(models.Model):
     '''A payment type saved by the buyer for use with orders'''
 
     name = models.CharField(max_length=50, blank=False)
-    accountNum = models.IntegerField(blank=False)
+    account_num = models.IntegerField(blank=False)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -53,7 +53,7 @@ class PaymentType(models.Model):
 class Order(models.Model):
     '''An order placed by the buying/logged in user'''
 
-    paymentType = models.ForeignKey(PaymentType, default=None, blank=True, null=True, on_delete=models.PROTECT)
+    payment_type = models.ForeignKey(PaymentType, default=None, blank=True, null=True, on_delete=models.PROTECT)
     product = models.ManyToManyField(Product, through='ProductOrder')
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
@@ -81,10 +81,10 @@ class Department(models.Model):
 
 class Employee(models.Model):
     '''An instance of a Bangazon Employee'''
-    firstName = models.CharField(max_length=100)
-    lastName = models.CharField(max_length=100)
-    startDate = models.DateField()
-    isSupervisor = models.BooleanField()
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    start_date = models.DateField()
+    is_supervisor = models.BooleanField()
     department = models.ForeignKey("Department", on_delete=models.CASCADE)
 
     def __str__(self):
@@ -94,7 +94,7 @@ class Training(models.Model):
     name = models.CharField(default="", max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
-    maxAttendees = models.IntegerField()
+    max_attendees = models.IntegerField()
     employees = models.ManyToManyField("Employee", through='EmployeeTraining')
 
     def __str__(self):
