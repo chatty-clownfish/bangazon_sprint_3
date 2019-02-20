@@ -6,7 +6,7 @@ class Customer(models.Model):
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
-    phone = models.IntegerField(max_length=10)
+    phone = models.IntegerField(blank=False)
     active = models.BooleanField(default=False)
 
     def __str__(self):
@@ -42,7 +42,7 @@ class PaymentType(models.Model):
     '''A payment type saved by the buyer for use with orders'''
 
     name = models.CharField(max_length=50, blank=False)
-    accountNum = models.IntegerField(max_length=16, blank=False)
+    accountNum = models.IntegerField(blank=False)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -90,7 +90,7 @@ class Employee(models.Model):
     def __str__(self):
         return self.firstName, self.lastName
 
-class TrainingProgram(models.Model):
+class Training(models.Model):
     name = models.CharField(default="", max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
