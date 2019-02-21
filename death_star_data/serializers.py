@@ -9,11 +9,18 @@ class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','name', 'account_num', 'customer','url')
 
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
-    payment = PaymentTypeSerializer(many = True, read_only = True)
+
+    def __init__(self,*args,**kwargs):
+        super(CustomerSerializer, self).__init__(*args,**kwargs)
+        request = kwargs['context']['request']
+        if request.query_params.get("_include") == "payment":
+            self.fields["payment"] = PaymentTypeSerializer(many = True, read_only = True)
 
     class Meta:
         model = Customer
-        fields = ('id','first_name', 'last_name', 'address', 'phone','active','url', 'payment')
+        fields = "__all__"
+
+        
 
 
 
