@@ -4,7 +4,8 @@ from rest_framework.routers import DefaultRouter
 from death_star_data import views
 
 router = DefaultRouter()
-# router.register('movies', views.MovieViewSet)
+router.register('paymenttype', views.PaymentTypeViewSet)
+router.register('customer', views.CustomerViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
