@@ -9,7 +9,9 @@ router = DefaultRouter()
 # router.register('movies', views.MovieViewSet)
 router = routers.DefaultRouter()
 router.register('ProductType', views.ProductTypeViewSet)
-
+router.register('paymenttype', views.PaymentTypeViewSet)
+router.register('customer', views.CustomerViewSet)
+router.register('Product', views.ProductViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
