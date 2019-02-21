@@ -12,7 +12,7 @@ class Customer(models.Model):
     def __str__(self):
         '''string method that returns the customer's full name'''
 
-        return self.firstName + self.lastName
+        return f"{self.first_name} {self.last_name}"
 
 class ProductType(models.Model):
     '''Various Product Categories'''
@@ -88,7 +88,7 @@ class Employee(models.Model):
     department = models.ForeignKey("Department", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.firstName, self.lastName
+        return f"{self.first_name} {self.last_name}"
 
 class Training(models.Model):
     name = models.CharField(default="", max_length=100)
@@ -104,6 +104,9 @@ class EmployeeTraining(models.Model):
     '''Join Table showing employee's participation in a training program'''
     employee = models.ForeignKey("Employee", on_delete=models.CASCADE, )
     training = models.ForeignKey("Training", on_delete=models.CASCADE, )
+
+    def __str__(self):
+        return f"{self.employee.first_name}  {self.employee.last_name} is scheduled for {self.training.name}"
 
 class Computer(models.Model):
     """A device that is assigned to a company employee"""
@@ -122,3 +125,6 @@ class ComputerEmployee(models.Model):
     """a relationship between computers and employees"""
     employee = models.ForeignKey('Employee', on_delete=models.PROTECT)
     computer = models.ForeignKey('Computer', on_delete=models.PROTECT)
+
+    def __str__(self):
+        return f"{self.employee.first_name} {self.employee.last_name} is assigned to {self.computer.id}"
