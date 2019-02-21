@@ -76,6 +76,12 @@ class Department(models.Model):
     name = models.CharField(default="", max_length=100)
     budget = models.IntegerField()
 
+    @property
+    def get_department_employees(self):
+        employees = Employee.Objects.filter(department__pk = self.id)
+        return employees
+
+
     def __str__(self):
         return f"Name: {self.name}  Budget: {self.budget}"
 
@@ -85,7 +91,7 @@ class Employee(models.Model):
     last_name = models.CharField(max_length=100)
     start_date = models.DateField()
     is_supervisor = models.BooleanField()
-    department = models.ForeignKey("Department", on_delete=models.CASCADE)
+    department = models.ForeignKey("Department", on_delete=models.CASCADE, related_name='employees')
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
