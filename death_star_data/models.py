@@ -14,6 +14,13 @@ class Customer(models.Model):
 
         return f"{self.first_name} {self.last_name}"
 
+    @property
+    def get_customer_payment(self):
+        payment = PaymentType.objects.filter(customer_id = self.id)
+
+        return payment
+
+
 class ProductType(models.Model):
     '''Various Product Categories'''
     name =  models.CharField(max_length=50, blank=False)
@@ -43,7 +50,7 @@ class PaymentType(models.Model):
 
     name = models.CharField(max_length=50, blank=False)
     account_num = models.IntegerField(blank=False)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='payment')
 
     def __str__(self):
         '''string method that returns the payment type name'''

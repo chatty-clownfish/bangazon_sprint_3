@@ -23,11 +23,20 @@ class PaymentTypeViewSet(viewsets.ModelViewSet):
     queryset = PaymentType.objects.all()
     serializer_class = PaymentTypeSerializer
 
-    
 
 class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    http_method_names = ['get', 'post', 'put']
 
+    # def get_queryset(self):
+    #     query_set = Customer.objects.all()
+    #     query_set_to_be_returned = []
+    #     for customer in query_set:
+    #         query_set_to_be_returned.append(customer.get_customer_payment)
+    #         print("customer",customer.get_customer_payment, customer)
+    
+    #     return query_set_to_be_returned
+            
     filter_backends = (filters.SearchFilter,)
     search_fields = ('first_name', 'last_name', 'address', 'phone', 'active')
