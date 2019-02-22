@@ -25,5 +25,3 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'budget',)
-
-    print(Department.get_department_employees)

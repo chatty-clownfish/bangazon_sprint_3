@@ -76,12 +76,6 @@ class Department(models.Model):
     name = models.CharField(default="", max_length=100)
     budget = models.IntegerField()
 
-    @property
-    def get_department_employees(self):
-        employees = Employee.Objects.filter(department__pk = self.id)
-        return employees
-
-
     def __str__(self):
         return f"Name: {self.name}  Budget: {self.budget}"
 
