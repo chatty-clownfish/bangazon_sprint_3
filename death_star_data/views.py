@@ -19,6 +19,11 @@ def api_root(request, format=None):
     })
 
 class ProductTypeViewSet(viewsets.ModelViewSet):
+'''
+Summary: This View Set is desplaying all of the Product Types Available through the serializer.
+
+Author: Daniel Combs
+'''
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
 
