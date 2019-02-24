@@ -29,6 +29,12 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
+'''
+Summary: This serializer is looking at the product model,
+and showing what all is going to be displayed in the fields section.
+
+Author: Daniel Combs
+'''
 
   class Meta:
     model = Product

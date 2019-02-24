@@ -42,6 +42,14 @@ class CustomerViewSet(viewsets.ModelViewSet):
     search_fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
 class ProductViewSet(viewsets.ModelViewSet):
+    '''
+
+    Summary: This view set is grabbing all of the Products and using the product Serializer to help display.
+    It also alows us to look determine the filters they mey search thru.
+
+    Author: Daniel Combs
+    '''
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
