@@ -12,6 +12,7 @@ router.register('ProductType', views.ProductTypeViewSet)
 router.register('paymenttype', views.PaymentTypeViewSet)
 router.register('customer', views.CustomerViewSet)
 router.register('Product', views.ProductViewSet)
+router.register('Order', views.OrderSerializer)
 
 urlpatterns = [
     path('', include(router.urls))

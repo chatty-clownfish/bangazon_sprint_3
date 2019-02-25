@@ -3,11 +3,9 @@ from death_star_data.models import Customer, Product, ProductType, PaymentType, 
 
 
 class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
-'''
-Summary: This is the Serializer for the Model of product Type
+    # This is the Serializer for the Model of product Type
+    # Author: Daniel Combs
 
-Author: Daniel Combs
-'''
     class Meta:
         model = ProductType
         fields = ('name',)
@@ -29,13 +27,21 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
-'''
-Summary: This serializer is looking at the product model,
-and showing what all is going to be displayed in the fields section.
+    # This serializer is looking at the product model,
+    # and showing what all is going to be displayed in the fields section.
+    # Author: Daniel Combs
 
-Author: Daniel Combs
-'''
 
   class Meta:
     model = Product
     fields = ('title', 'description', 'price', 'quantity', 'product_type','seller')
+
+
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
+    #This serializer is looking at the product model,
+    #and showing what all is going to be displayed in the fields section.
+    #Author: Daniel Combs
+
+  class Meta:
+    model = Order
+    fields = ('payment_type', 'product', 'customer', 'url')
