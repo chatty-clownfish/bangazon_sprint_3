@@ -60,14 +60,6 @@ class ProductTypeViewSet(viewsets.ModelViewSet):
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
 
-class DepartmentViewSet(viewsets.ModelViewSet):
-    queryset = Department.objects.all()
-    serializer_class = DepartmentSerializer
-
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('budget')
-
-
 class PaymentTypeViewSet(viewsets.ModelViewSet):
     queryset = PaymentType.objects.all()
     serializer_class = PaymentTypeSerializer
@@ -84,6 +76,6 @@ class CustomerViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
+    
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title', 'description', 'price', 'quantity', 'product_type','seller')
