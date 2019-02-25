@@ -13,10 +13,10 @@ import datetime
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        'training': reverse('training', request=request, format=format),  
+        'training': reverse('training', request=request, format=format),
         'employee': reverse('employee', request=request, format=format),
         'department': reverse('department', request=request, format=format),
-        'ProductType' : reverse('ProductType', request = request, format = format),
+        'ProductType': reverse('ProductType', request = request, format = format),
         'paymenttype': reverse('paymenttype', request=request, format=format),
         'customer': reverse('customer', request=request, format=format),
         'department': reverse('department', request=request, format=format),
@@ -53,7 +53,7 @@ class TrainingViewSet(viewsets.ModelViewSet):
             query_set = query_set.filter(end_date__gte=current_date)
         return query_set
 
-    
+
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
@@ -65,6 +65,16 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'budget')
+
+    def get_queryset(self):
+        queryset = Department.objects.all()
+        _filter = self.request.query_params.get("_filter", None)
+        _gt = self.request.query_params.get("_gt", None)
+
+        if _filter == "budget" and _gt is not None:
+            queryset=queryset.filter(budget__gt=_gt)
+
+        return queryset
 
 
 class ProductTypeViewSet(viewsets.ModelViewSet):
@@ -87,7 +97,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    
+
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title', 'description', 'price', 'quantity', 'product_type','seller')
 

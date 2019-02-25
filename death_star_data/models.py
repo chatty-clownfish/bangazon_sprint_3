@@ -14,12 +14,6 @@ class Customer(models.Model):
 
         return f"{self.first_name} {self.last_name}"
 
-    @property
-    def get_customer_payment(self):
-        payment = PaymentType.objects.filter(customer_id = self.id)
-
-        return payment
-
 
 class ProductType(models.Model):
     '''Various Product Categories'''
@@ -94,7 +88,7 @@ class Employee(models.Model):
     start_date = models.DateField()
     is_supervisor = models.BooleanField()
     '''related_name on the FK allows access to employee model through department serializer'''
-    department = models.ForeignKey("Department", on_delete=models.CASCADE, related_name='employees')
+    department = models.ForeignKey("Department", on_delete=models.CASCADE, related_name="roster")
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -112,8 +106,8 @@ class Training(models.Model):
 
 class EmployeeTraining(models.Model):
     '''Join Table showing employee's participation in a training program'''
-    employee = models.ForeignKey("Employee", on_delete=models.CASCADE, )
-    training = models.ForeignKey("Training", on_delete=models.CASCADE, )
+    employee = models.ForeignKey("Employee", on_delete=models.CASCADE)
+    training = models.ForeignKey("Training", on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.employee.first_name}  {self.employee.last_name} is scheduled for {self.training.name}"
