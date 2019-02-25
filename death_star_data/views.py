@@ -20,6 +20,7 @@ def api_root(request, format=None):
         'paymenttype': reverse('paymenttype', request=request, format=format),
         'customer': reverse('customer', request=request, format=format),
         'Order': reversse('Order', request= request, format=format),
+        'department': reverse('department', request=request, format=format),
     })
 
 class TrainingViewSet(viewsets.ModelViewSet):
@@ -62,7 +63,6 @@ class ProductTypeViewSet(viewsets.ModelViewSet):
 
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
-
 
 class PaymentTypeViewSet(viewsets.ModelViewSet):
     queryset = PaymentType.objects.all()
