@@ -31,11 +31,11 @@ class PaymentTypeViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentTypeSerializer
 
 
-
 class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-
+    http_method_names = ['get', 'post', 'put']
+      
     filter_backends = (filters.SearchFilter,)
     search_fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 

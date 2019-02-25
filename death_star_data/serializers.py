@@ -11,20 +11,24 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name',)
 
 
-
-
 class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
 
-  class Meta:
-    model = PaymentType
-    fields = ('name', 'account_num', 'customer')
+    class Meta:
+        model = PaymentType
+        fields = ('id','name', 'account_num', 'customer','url')
 
 
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
 
-  class Meta:
-    model = Customer
-    fields = ('first_name', 'last_name', 'address', 'phone', 'active')
+    def __init__(self,*args,**kwargs):
+        super(CustomerSerializer, self).__init__(*args,**kwargs)
+        request = kwargs['context']['request']
+        if request.query_params.get("_include") == "payments":
+            self.fields["payment"] = PaymentTypeSerializer(many = True, read_only = True)
+
+    class Meta:
+        model = Customer
+        fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     # This serializer is looking at the product model,
