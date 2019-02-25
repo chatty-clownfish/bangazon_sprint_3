@@ -11,10 +11,10 @@ from death_star_data.serializers import DepartmentSerializer, EmployeeSerializer
 def api_root(request, format=None):
     return Response({
         'employee': reverse('employee', request=request, format=format),
-         'department': reverse('department', request=request, format=format)
+         'department': reverse('department', request=request, format=format),
         'ProductType' : reverse('ProductType', request = request, format = format),
         'paymenttype': reverse('paymenttype', request=request, format=format),
-        'customer': reverse('customer', request=request, format=format),
+        'customer': reverse('customer', request=request, format=format)
     })
 
 class EmployeeViewSet(viewsets.ModelViewSet):
@@ -27,7 +27,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'put']
 
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('name', 'budget',)
+    search_fields = ('name', 'budget')
 
 
 class ProductTypeViewSet(viewsets.ModelViewSet):
