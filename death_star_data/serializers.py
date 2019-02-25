@@ -23,7 +23,7 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
         if request.query_params.get("_include") == "payment":
             self.fields["payment"] = PaymentTypeSerializer(many = True, read_only = True)
 
-    class Meta:
+  class Meta:
         model = Customer
         fields = "__all__"
 
