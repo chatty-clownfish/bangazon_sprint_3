@@ -82,7 +82,7 @@ class ProductOrder(models.Model):
 class Department(models.Model):
     name = models.CharField(default="", max_length=100)
     budget = models.IntegerField()
-    
+
 
     def __str__(self):
         return f"Name: {self.name}  Budget: {self.budget}"
