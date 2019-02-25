@@ -85,4 +85,9 @@ class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
         model = Department
         fields = ('id', 'name')
 
+class ComputerSerializer(serializers.HyperlinkedModelSerializer):
+    
+    class Meta:
+        model = Computer 
+        fields = ('id', 'purchase_date', 'decommission_date', 'manufacturer', 'model', 'employee', 'url')
 
