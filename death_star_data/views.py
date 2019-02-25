@@ -22,17 +22,21 @@ def api_root(request, format=None):
     })
 
 class TrainingViewSet(viewsets.ModelViewSet):
+    '''Will get us a list of training programs as well as the ability to view a program individually.
+       A list of employees who signed up for a training program will be visable.
+       Able to view only programs starting today, or in the future, with the `?completed=false` query string parameter.
+     '''
     queryset = Training.objects.all()
     serializer_class = TrainingSerializers
     
 
     def get_queryset(self):
+        ''' Assigns the keyword of completed. Then filters through our query set of training programs and evaluate
+        whether current time is greater than(gte) or lesser than(lt) then return the query_set '''
         current_date = datetime.date.today()
         query_set = Training.objects.all()
         keyword = self.request.query_params.get('completed')
-        if keyword == 'true':    
-            print("query params", keyword)
-            print("HERE", current_date)
+        if keyword == 'true':
             query_set = query_set.filter(end_date__lt=current_date)
         elif keyword == 'false':
             query_set = query_set.filter(end_date__gte=current_date)
