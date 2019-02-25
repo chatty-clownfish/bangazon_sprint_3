@@ -16,6 +16,7 @@ def api_root(request, format=None):
         'ProductType' : reverse('ProductType', request = request, format = format),
         'paymenttype': reverse('paymenttype', request=request, format=format),
         'customer': reverse('customer', request=request, format=format),
+        'Order': reversse('Order', request= request, format=format),
     })
 
 class ProductTypeViewSet(viewsets.ModelViewSet):
@@ -35,7 +36,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     http_method_names = ['get', 'post', 'put']
-      
+
     filter_backends = (filters.SearchFilter,)
     search_fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
@@ -62,3 +63,12 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     filter_backends = (filters.SearchFilter,)
     search_fields = ('payment_type', 'product', 'customer', 'url')
+
+    def get_queryset(self):
+        query_set = Order.objects.all()
+        keyword = self.request.query_params.get('completed')
+        if keyword == 'true':
+            query_set = query_set.exclude(payment_type_id__isnull=True)
+        elif keyword == 'false':
+            query_set =query_set.exclude(payment_type_id__isnull=False)
+        return query_set
