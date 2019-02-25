@@ -8,6 +8,7 @@ class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
         model = PaymentType
         fields = ('id','name', 'account_num', 'customer','url')
 
+
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
 
     def __init__(self,*args,**kwargs):
