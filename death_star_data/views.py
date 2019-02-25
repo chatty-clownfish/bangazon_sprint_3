@@ -11,8 +11,8 @@ from death_star_data.serializers import DepartmentSerializer, EmployeeSerializer
 def api_root(request, format=None):
     return Response({
         'employee': reverse('employee', request=request, format=format),
-         'department': reverse('department', request=request, format=format),
-        'ProductType' : reverse('ProductType', request = request, format = format),
+        'department': reverse('department', request=request, format=format),
+        'ProductType': reverse('ProductType', request = request, format = format),
         'paymenttype': reverse('paymenttype', request=request, format=format),
         'customer': reverse('customer', request=request, format=format)
     })
@@ -28,6 +28,17 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'budget')
+
+    def get_queryset(self):
+        queryset = Department.objects.all()
+        _filter = self.request.query_params.get("_filter", None)
+        _gt = self.request.query_params.get("_gt", None)
+
+        if _filter == "budget" and _gt is not None:
+            queryset=queryset.filter(budget__gt=_gt)
+
+        return queryset
+
 
 
 class ProductTypeViewSet(viewsets.ModelViewSet):
