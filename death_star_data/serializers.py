@@ -19,7 +19,7 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     def __init__(self,*args,**kwargs):
         super(CustomerSerializer, self).__init__(*args,**kwargs)
         request = kwargs['context']['request']
-        if request.query_params.get("_include") == "payment":
+        if request.query_params.get("_include") == "payments":
             self.fields["payment"] = PaymentTypeSerializer(many = True, read_only = True)
 
     class Meta:
