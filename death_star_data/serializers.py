@@ -7,7 +7,6 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name',)
 
 
-
 class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
