@@ -16,6 +16,12 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'start_date', 'is_supervisor', 'department')
         # fields = "__all__"
 
+class TrainingSerializers(serializers.HyperlinkedModelSerializer):
+    employees = EmployeeSerializer(many=True, read_only=True)
+    class Meta:
+        model = Training
+        fields = ('id', 'name', 'start_date', 'end_date', 'max_attendees', 'employees', 'url')
+
 class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
     '''The following variable connects the FK of department on the employee model, which gives access to employee information through the serializer using many=True.
 
@@ -45,7 +51,6 @@ class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PaymentType
         fields = ('id','name', 'account_num', 'customer','url')
-
 
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
 
