@@ -6,8 +6,8 @@ from rest_framework import routers
 from death_star_data import views
 
 router = DefaultRouter()
-# router.register('movies', views.MovieViewSet)
-router = routers.DefaultRouter()
+router.register('department', views.DepartmentViewSet),
+router.register('employee', views.EmployeeViewSet)
 router.register('ProductType', views.ProductTypeViewSet)
 router.register('paymenttype', views.PaymentTypeViewSet)
 router.register('customer', views.CustomerViewSet)
