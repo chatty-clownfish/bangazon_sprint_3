@@ -29,7 +29,17 @@ class TrainingViewSet(viewsets.ModelViewSet):
      '''
     queryset = Training.objects.all()
     serializer_class = TrainingSerializers
-    
+    current_date = datetime.date.today()
+
+    def destroy(self, request, *args, **kwargs):
+        query_set = self.get_object()
+        if self.current_date >= query_set.end_date:
+            print('LESS THAN =', query_set.end_date)
+            # TODO:Make alert message to tell the user that they cannot delete past events
+        elif self.current_date < query_set.end_date:
+            query_set.delete()
+        return query_set
+
     def get_queryset(self):
         ''' Assigns the keyword of completed. Then filters through our query set of training programs and evaluate
         whether current time is greater than(gte) or lesser than(lt) then return the query_set '''
