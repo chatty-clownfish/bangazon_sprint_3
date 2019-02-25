@@ -49,3 +49,10 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
   class Meta:
     model = Order
     fields = ('payment_type', 'product', 'customer')
+
+
+  def __init__(self,*args,**kwargs):
+          super(CustomerSerializer, self).__init__(*args,**kwargs)
+          request = kwargs['context']['request']
+          if request.query_params.get("_include") == "customers":
+              self.fields["customer"] = OrderSerializer(many = True, read_only = True)
