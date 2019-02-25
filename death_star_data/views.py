@@ -19,6 +19,7 @@ def api_root(request, format=None):
         'ProductType': reverse('ProductType', request = request, format = format),
         'paymenttype': reverse('paymenttype', request=request, format=format),
         'customer': reverse('customer', request=request, format=format),
+        'department': reverse('department', request=request, format=format),
     })
 
 class TrainingViewSet(viewsets.ModelViewSet):
@@ -28,6 +29,16 @@ class TrainingViewSet(viewsets.ModelViewSet):
      '''
     queryset = Training.objects.all()
     serializer_class = TrainingSerializers
+    current_date = datetime.date.today()
+
+    def destroy(self, request, *args, **kwargs):
+        query_set = self.get_object()
+        if self.current_date >= query_set.end_date:
+            print('LESS THAN =', query_set.end_date)
+            # TODO:Make alert message to tell the user that they cannot delete past events
+        elif self.current_date < query_set.end_date:
+            query_set.delete()
+        return query_set
 
     def get_queryset(self):
         ''' Assigns the keyword of completed. Then filters through our query set of training programs and evaluate
@@ -68,7 +79,6 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 class ProductTypeViewSet(viewsets.ModelViewSet):
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
-
 
 class PaymentTypeViewSet(viewsets.ModelViewSet):
     queryset = PaymentType.objects.all()

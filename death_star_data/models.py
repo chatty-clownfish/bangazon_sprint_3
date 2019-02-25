@@ -32,7 +32,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2, blank=False)
     quantity = models.IntegerField(blank=False)
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, null=True)
-    seller = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    seller = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='inventory')
 
     def __str__(self):
         '''string method that returns the Product title'''
@@ -76,6 +76,7 @@ class ProductOrder(models.Model):
 class Department(models.Model):
     name = models.CharField(default="", max_length=100)
     budget = models.IntegerField()
+    
 
     def __str__(self):
         return f"Name: {self.name}  Budget: {self.budget}"
@@ -91,6 +92,7 @@ class Employee(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
 
 class Training(models.Model):
     name = models.CharField(default="", max_length=100)
