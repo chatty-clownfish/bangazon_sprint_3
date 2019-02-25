@@ -25,18 +25,10 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Customer
-        fields = "__all__"
-
-        
-
-
-
-  class Meta:
-    model = Customer
-    fields = ('first_name', 'last_name', 'address', 'phone', 'active')
+        fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
 
-  class Meta:
-    model = Product
-    fields = ('title', 'description', 'price', 'quantity', 'product_type','seller')
+    class Meta:
+        model = Product
+        fields = ('title', 'description', 'price', 'quantity', 'product_type','seller')
