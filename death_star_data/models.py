@@ -85,6 +85,7 @@ class Employee(models.Model):
     last_name = models.CharField(max_length=100)
     start_date = models.DateField()
     is_supervisor = models.BooleanField()
+    '''related_name on the FK allows access to employee model through department serializer'''
     department = models.ForeignKey("Department", on_delete=models.CASCADE, related_name='employees')
 
     def __str__(self):
