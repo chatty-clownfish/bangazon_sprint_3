@@ -1,15 +1,6 @@
 from rest_framework import serializers
 from death_star_data.models import Customer, Product, ProductType, PaymentType, Order, ProductOrder, Department, Employee, Training, EmployeeTraining, Computer, ComputerEmployee
 
-<<<<<<< HEAD
-class TrainingSerializers(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Training
-        fields = ('id', 'name', 'start_date', 'end_date', 'max_attendees', 'url')
-
-        # TODO:  add  'employees'  to end of fields above once it is built
-=======
 '''
 
 Ticket #7
@@ -25,6 +16,12 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
         model = Employee
         fields = ('id', 'first_name', 'last_name', 'start_date', 'is_supervisor', 'department')
 
+class TrainingSerializers(serializers.HyperlinkedModelSerializer):
+    employees = EmployeeSerializer(many=True, read_only=True)
+    class Meta:
+        model = Training
+        fields = ('id', 'name', 'start_date', 'end_date', 'max_attendees', 'employees', 'url')
+
 class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
     '''The following variable connects the FK of department on the employee model, which gives access to employee information through the serializer using many=True.
 
@@ -34,17 +31,13 @@ class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Department
         fields = ('id', 'name', 'budget', 'url', 'employees')
->>>>>>> master
 
 class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProductType
         fields = ('name',)
 
-<<<<<<< HEAD
-=======
 
->>>>>>> master
 class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:

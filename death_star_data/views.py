@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from rest_framework import viewsets, filters
+from rest_framework import viewsets
+from rest_framework import filters
 from rest_framework.decorators import api_view
 from rest_framework.decorators import action
-from rest_framework import filters
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
@@ -29,7 +29,6 @@ class TrainingViewSet(viewsets.ModelViewSet):
     queryset = Training.objects.all()
     serializer_class = TrainingSerializers
     
-
     def get_queryset(self):
         ''' Assigns the keyword of completed. Then filters through our query set of training programs and evaluate
         whether current time is greater than(gte) or lesser than(lt) then return the query_set '''
@@ -41,6 +40,8 @@ class TrainingViewSet(viewsets.ModelViewSet):
         elif keyword == 'false':
             query_set = query_set.filter(end_date__gte=current_date)
         return query_set
+
+    
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
