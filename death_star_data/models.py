@@ -81,6 +81,27 @@ class Department(models.Model):
     def __str__(self):
         return f"Name: {self.name}  Budget: {self.budget}"
 
+class Computer(models.Model):
+    """A device that is assigned to a company employee"""
+
+    purchase_date = models.DateField('Purchase Date')
+    decommission_date = models.DateField('Decommission Date', default=None, blank=True, null=True)
+    manufacturer = models.CharField(max_length=30)
+    model = models.CharField(max_length=30)
+    # employee = models.ManyToManyField(Employee, through='ComputerEmployee')
+
+    def __str__(self):
+        computer_name = (f"{self.manufacturer} {self.model} - ID#{self.id}")
+        return computer_name
+
+class ComputerEmployee(models.Model):
+    """a relationship between computers and employees"""
+    employee = models.ForeignKey('Employee', on_delete=models.PROTECT)
+    computer = models.ForeignKey('Computer', on_delete=models.PROTECT)
+
+    def __str__(self):
+        return f"{self.employee.first_name} {self.employee.last_name} is assigned to {self.computer.id}"
+
 class Employee(models.Model):
     '''An instance of a Bangazon Employee'''
     first_name = models.CharField(max_length=100)
@@ -89,6 +110,8 @@ class Employee(models.Model):
     is_supervisor = models.BooleanField()
     '''related_name on the FK allows access to employee model through department serializer'''
     department = models.ForeignKey("Department", on_delete=models.CASCADE, related_name="roster")
+    computer = models.ManyToManyField(Computer, through='ComputerEmployee')
+
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -112,23 +135,3 @@ class EmployeeTraining(models.Model):
     def __str__(self):
         return f"{self.employee.first_name}  {self.employee.last_name} is scheduled for {self.training.name}"
 
-class Computer(models.Model):
-    """A device that is assigned to a company employee"""
-
-    purchase_date = models.DateField('Purchase Date')
-    decommission_date = models.DateField('Decommission Date', default=None, blank=True, null=True)
-    manufacturer = models.CharField(max_length=30)
-    model = models.CharField(max_length=30)
-    employee = models.ManyToManyField(Employee, through='ComputerEmployee')
-
-    def __str__(self):
-        computer_name = (f"{self.manufacturer} {self.model} - ID#{self.id}")
-        return computer_name
-
-class ComputerEmployee(models.Model):
-    """a relationship between computers and employees"""
-    employee = models.ForeignKey('Employee', on_delete=models.PROTECT)
-    computer = models.ForeignKey('Computer', on_delete=models.PROTECT)
-
-    def __str__(self):
-        return f"{self.employee.first_name} {self.employee.last_name} is assigned to {self.computer.id}"

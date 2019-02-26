@@ -8,16 +8,43 @@ Ticket #7
 * If the query string parameters of `?_filter=budget&_gt=300000` is provided on a request for the list of departments, then any department whose budget is $300,000, or greater, should be in the response.
 
 '''
-
-class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
+class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
+    
+    def __init__(self,*args,**kwargs):
+        super(DepartmentSerializer, self).__init__(*args,**kwargs)
+        request = kwargs['context']['request']
+        if request.query_params.get("_include") == "employees":
+            self.fields["roster"] = EmployeeSerializer(many = True, read_only = True)
 
     class Meta:
+        model = Department
+        fields = "__all__"
+
+class ComputerSerializer(serializers.HyperlinkedModelSerializer):
+    
+    class Meta:
+        model = Computer 
+        fields = ('id', 'purchase_date', 'manufacturer', 'model')
+
+class EmployeeDepartmentSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+
+        model = Department
+        exclude = ("budget", "url",)
+
+class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
+    department = EmployeeDepartmentSerializer(read_only=True)
+    computer = ComputerSerializer(many=True, read_only=True)
+    
+    class Meta:
         model = Employee
-        fields = ('id', 'first_name', 'last_name', 'start_date', 'is_supervisor', 'department')
-        # fields = "__all__"
+        fields = ('id', 'first_name', 'last_name', 'start_date', 'is_supervisor', 'department', 'computer')
+
 
 class TrainingSerializers(serializers.HyperlinkedModelSerializer):
     employees = EmployeeSerializer(many=True, read_only=True)
+
     class Meta:
         model = Training
         fields = ('id', 'name', 'start_date', 'end_date', 'max_attendees', 'employees', 'url')
@@ -58,14 +85,6 @@ class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','name', 'account_num', 'customer','url')
 
 
-
-class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Employee
-        fields = ('id','first_name','last_name','department')
-
-
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
 
     def __init__(self,*args,**kwargs):
@@ -81,21 +100,4 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
 
-class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
-
-    def __init__(self,*args,**kwargs):
-        super(DepartmentSerializer, self).__init__(*args,**kwargs)
-        request = kwargs['context']['request']
-        if request.query_params.get("_include") == "employees":
-            self.fields["roster"] = EmployeeSerializer(many = True, read_only = True)
-
-    class Meta:
-        model = Department
-        fields = ('id', 'name')
-
-class ComputerSerializer(serializers.HyperlinkedModelSerializer):
-    
-    class Meta:
-        model = Computer 
-        fields = ('id', 'purchase_date', 'decommission_date', 'manufacturer', 'model', 'employee', 'url')
 
