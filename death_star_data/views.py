@@ -122,7 +122,6 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title', 'description', 'price', 'quantity', 'product_type','seller')
 
-<<<<<<< HEAD
 
 class OrderViewSet(viewsets.ModelViewSet):
     # This view set is grabbing all of the Products and using the product Serializer to help display.
@@ -143,8 +142,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         elif keyword == 'false':
             query_set =query_set.exclude(payment_type_id__isnull=False)
         return query_set
-=======
+
 class ComputerViewSet(viewsets.ModelViewSet):
     queryset = Computer.objects.all()
     serializer_class = ComputerSerializer
->>>>>>> master

@@ -56,7 +56,7 @@ class Order(models.Model):
 
     payment_type = models.ForeignKey(PaymentType, default=None, blank=True, null=True, on_delete=models.PROTECT)
     product = models.ManyToManyField(Product, through='ProductOrder')
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="customers")
 
     def __str__(self):
         '''string method that returns the Order id'''
