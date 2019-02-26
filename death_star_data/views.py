@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from death_star_data.models import Customer, Product, ProductType, PaymentType, Order, ProductOrder, Department, Employee, Training, EmployeeTraining, Computer, ComputerEmployee
-from death_star_data.serializers import PaymentTypeSerializer, CustomerSerializer, ProductTypeSerializer, ProductSerializer, TrainingSerializers, DepartmentSerializer, EmployeeSerializer
+from death_star_data.serializers import PaymentTypeSerializer, CustomerSerializer, ProductTypeSerializer, ProductSerializer, TrainingSerializers, DepartmentSerializer, EmployeeSerializer, ComputerSerializer
 import datetime
 
 @api_view(['GET'])
@@ -20,6 +20,7 @@ def api_root(request, format=None):
         'paymenttype': reverse('paymenttype', request=request, format=format),
         'customer': reverse('customer', request=request, format=format),
         'department': reverse('department', request=request, format=format),
+        'computer': reverse('computer', request=request, format=format),
     })
 
 class TrainingViewSet(viewsets.ModelViewSet):
@@ -99,3 +100,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title', 'description', 'price', 'quantity', 'product_type','seller')
+
+class ComputerViewSet(viewsets.ModelViewSet):
+    queryset = Computer.objects.all()
+    serializer_class = ComputerSerializer
