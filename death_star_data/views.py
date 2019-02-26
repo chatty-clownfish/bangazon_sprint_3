@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from death_star_data.models import Customer, Product, ProductType, PaymentType, Order, ProductOrder, Department, Employee, Training, EmployeeTraining, Computer, ComputerEmployee
-from death_star_data.serializers import PaymentTypeSerializer, CustomerSerializer, ProductTypeSerializer, ProductSerializer, TrainingSerializers, DepartmentSerializer, EmployeeSerializer, OrderSerializer
+from death_star_data.serializers import PaymentTypeSerializer, CustomerSerializer, ProductTypeSerializer, ProductSerializer, TrainingSerializers, DepartmentSerializer, EmployeeSerializer, ComputerSerializer, OrderSerializer
 import datetime
 
 @api_view(['GET'])
@@ -16,11 +16,12 @@ def api_root(request, format=None):
         'training': reverse('training', request=request, format=format),
         'employee': reverse('employee', request=request, format=format),
         'department': reverse('department', request=request, format=format),
-        'ProductType' : reverse('ProductType', request = request, format = format),
+        'ProductType': reverse('ProductType', request = request, format = format),
         'paymenttype': reverse('paymenttype', request=request, format=format),
         'customer': reverse('customer', request=request, format=format),
         'Order': reversse('Order', request= request, format=format),
         'department': reverse('department', request=request, format=format),
+        'computer': reverse('computer', request=request, format=format),
     })
 
 class TrainingViewSet(viewsets.ModelViewSet):
@@ -66,6 +67,16 @@ class DepartmentViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'budget')
 
+    def get_queryset(self):
+        queryset = Department.objects.all()
+        _filter = self.request.query_params.get("_filter", None)
+        _gt = self.request.query_params.get("_gt", None)
+
+        if _filter == "budget" and _gt is not None:
+            queryset=queryset.filter(budget__gt=_gt)
+
+        return queryset
+
 
 class ProductTypeViewSet(viewsets.ModelViewSet):
     #Summary: This View Set is desplaying all of the Product Types Available through the serializer.
@@ -87,6 +98,18 @@ class CustomerViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
+    ''' Allows user to filter customers by whether they are active or not '''
+    def get_queryset(self):
+        query_set = self.queryset
+        active = self.request.query_params.get("active", None)
+
+        if active == "false":
+            query_set = [x for x in query_set if x.active==False]
+        elif active == "true":
+            query_set = [x for x in query_set if x.active==True]
+
+        return query_set
+
 class ProductViewSet(viewsets.ModelViewSet):
     #This view set is grabbing all of the Products and using the product Serializer to help display.
     #It also alows us to look determine the filters they mey search thru.
@@ -99,6 +122,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title', 'description', 'price', 'quantity', 'product_type','seller')
 
+<<<<<<< HEAD
 
 class OrderViewSet(viewsets.ModelViewSet):
     # This view set is grabbing all of the Products and using the product Serializer to help display.
@@ -119,3 +143,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         elif keyword == 'false':
             query_set =query_set.exclude(payment_type_id__isnull=False)
         return query_set
+=======
+class ComputerViewSet(viewsets.ModelViewSet):
+    queryset = Computer.objects.all()
+    serializer_class = ComputerSerializer
+>>>>>>> master

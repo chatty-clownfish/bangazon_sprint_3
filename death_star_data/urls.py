@@ -6,7 +6,7 @@ from death_star_data import views
 
 
 router = DefaultRouter()
-router.register('department', views.DepartmentViewSet),
+router.register('department', views.DepartmentViewSet)
 router.register('employee', views.EmployeeViewSet)
 router.register('ProductType', views.ProductTypeViewSet)
 router.register('paymenttype', views.PaymentTypeViewSet)
@@ -14,6 +14,8 @@ router.register('customer', views.CustomerViewSet)
 router.register('Product', views.ProductViewSet)
 router.register('Order', views.OrderViewSet)
 router.register('training', views.TrainingViewSet)
+router.register('computer', views.ComputerViewSet)
+
 
 urlpatterns = [
     path('', include(router.urls))
