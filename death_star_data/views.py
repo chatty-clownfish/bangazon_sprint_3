@@ -94,6 +94,18 @@ class CustomerViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
+    ''' Allows user to filter customers by whether they are active or not '''
+    def get_queryset(self):
+        query_set = self.queryset
+        active = self.request.query_params.get("active", None)
+
+        if active == "false":
+            query_set = [x for x in query_set if x.active==False]
+        elif active == "true":
+            query_set = [x for x in query_set if x.active==True]
+
+        return query_set
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer

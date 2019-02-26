@@ -74,7 +74,7 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
         if request.query_params.get("_include") == "payments":
             self.fields["payment"] = PaymentTypeSerializer(many = True, read_only = True)
         if request.query_params.get("_include") == "products":
-            self.fields["inventory"] = ProductSerializer(many = True, read_only = True) 
+            self.fields["inventory"] = ProductSerializer(many = True, read_only = True)
 
     class Meta:
         model = Customer
