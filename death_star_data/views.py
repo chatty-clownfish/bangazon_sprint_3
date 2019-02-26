@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from death_star_data.models import Customer, Product, ProductType, PaymentType, Order, ProductOrder, Department, Employee, Training, EmployeeTraining, Computer, ComputerEmployee
-from death_star_data.serializers import PaymentTypeSerializer, CustomerSerializer, ProductTypeSerializer, ProductSerializer, TrainingSerializers, DepartmentSerializer, EmployeeSerializer, ComputerSerializer
+from death_star_data.serializers import PaymentTypeSerializer, CustomerSerializer, ProductTypeSerializer, ProductSerializer, TrainingSerializers, DepartmentSerializer, EmployeeSerializer, ComputerSerializer, OrderSerializer
 import datetime
 
 @api_view(['GET'])
@@ -19,6 +19,7 @@ def api_root(request, format=None):
         'ProductType': reverse('ProductType', request = request, format = format),
         'paymenttype': reverse('paymenttype', request=request, format=format),
         'customer': reverse('customer', request=request, format=format),
+        'Order': reversse('Order', request= request, format=format),
         'department': reverse('department', request=request, format=format),
         'computer': reverse('computer', request=request, format=format),
     })
@@ -78,6 +79,9 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 
 
 class ProductTypeViewSet(viewsets.ModelViewSet):
+    #Summary: This View Set is desplaying all of the Product Types Available through the serializer.
+    #Author: Daniel Combs
+
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
 
@@ -107,11 +111,37 @@ class CustomerViewSet(viewsets.ModelViewSet):
         return query_set
 
 class ProductViewSet(viewsets.ModelViewSet):
+    #This view set is grabbing all of the Products and using the product Serializer to help display.
+    #It also alows us to look determine the filters they mey search thru.
+    #Author: Daniel Combs
+
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title', 'description', 'price', 'quantity', 'product_type','seller')
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    # This view set is grabbing all of the Products and using the product Serializer to help display.
+    #It also alows us to look determine the filters they mey search thru.
+    #Author: Daniel Combs
+
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('payment_type', 'product', 'customer', 'url')
+
+    def get_queryset(self):
+        query_set = Order.objects.all()
+        keyword = self.request.query_params.get('completed')
+        if keyword == 'true':
+            query_set = query_set.exclude(payment_type_id__isnull=True)
+        elif keyword == 'false':
+            query_set =query_set.exclude(payment_type_id__isnull=False)
+        return query_set
 
 class ComputerViewSet(viewsets.ModelViewSet):
     queryset = Computer.objects.all()
