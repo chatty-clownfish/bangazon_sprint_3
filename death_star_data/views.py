@@ -101,8 +101,9 @@ class CustomerViewSet(viewsets.ModelViewSet):
 
         if active == "false":
             query_set = [x for x in query_set if x.active==False]
-        else:
+        elif active == "true":
             query_set = [x for x in query_set if x.active==True]
+
         return query_set
 
 class ProductViewSet(viewsets.ModelViewSet):
