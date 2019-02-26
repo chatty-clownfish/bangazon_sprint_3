@@ -1,27 +1,11 @@
 from rest_framework import serializers
 from death_star_data.models import Customer, Product, ProductType, PaymentType, Order, ProductOrder, Department, Employee, Training, EmployeeTraining, Computer, ComputerEmployee
 
-
-
-class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Employee
-        fields = ('id', 'first_name', 'last_name', 'start_date', 'is_supervisor', 'department')
-        # fields = "__all__"
-
-class TrainingSerializers(serializers.HyperlinkedModelSerializer):
-    employees = EmployeeSerializer(many=True, read_only=True)
-    class Meta:
-        model = Training
-        fields = ('id', 'name', 'start_date', 'end_date', 'max_attendees', 'employees', 'url')
-
 class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
     '''The following variable connects the FK of department on the employee model, which gives access to employee information through the serializer using many=True.
 
     More about nested relationships here: https://www.django-rest-framework.org/api-guide/relations/#nested-relationships'''
 
-    # employees = EmployeeSerializer(many=True, read_only=True)
     def __init__(self,*args,**kwargs):
         super(DepartmentSerializer, self).__init__(*args,**kwargs)
         request = kwargs['context']['request']
@@ -33,6 +17,35 @@ class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Department
         fields = '__all__'
+
+class ComputerSerializer(serializers.HyperlinkedModelSerializer):
+    
+    class Meta:
+        model = Computer 
+        fields = ('id', 'purchase_date', 'manufacturer', 'model')
+
+class EmployeeDepartmentSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+
+        model = Department
+        exclude = ("budget", "url",)
+
+class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
+    department = EmployeeDepartmentSerializer(read_only=True)
+    computer = ComputerSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Employee
+        fields = ('id', 'first_name', 'last_name', 'start_date', 'is_supervisor', 'department', 'computer')
+
+
+class TrainingSerializers(serializers.HyperlinkedModelSerializer):
+    employees = EmployeeSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Training
+        fields = ('id', 'name', 'start_date', 'end_date', 'max_attendees', 'employees', 'url')
 
 class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
     # This is the Serializer for the Model of product Type
@@ -72,8 +85,6 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
         model = Customer
         fields = ('first_name', 'last_name', 'address', 'phone', 'active')
 
-
-
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     #This serializer is looking at the product model,
     #and showing what all is going to be displayed in the fields section.
@@ -96,9 +107,5 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
     model = Order
     fields = ('payment_type', 'product', 'customer')
 
-class ComputerSerializer(serializers.HyperlinkedModelSerializer):
 
-    class Meta:
-        model = Computer
-        fields = ('id', 'purchase_date', 'decommission_date', 'manufacturer', 'model', 'employee', 'url')
 
