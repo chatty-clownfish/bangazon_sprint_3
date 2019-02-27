@@ -53,6 +53,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGIN_WHITELIST = (
+        'localhost:3000',
+        '127.0.0.1:3000',
+        'localhost:3001',
+        '127.0.0.1:3001'
+)
+
 ROOT_URLCONF = 'death_star_711.urls'
 
 TEMPLATES = [
