@@ -16,10 +16,10 @@ def api_root(request, format=None):
         'training': reverse('training', request=request, format=format),
         'employee': reverse('employee', request=request, format=format),
         'department': reverse('department', request=request, format=format),
-        'ProductType': reverse('ProductType', request = request, format = format),
+        'ProductType': reverse('producttype', request = request, format = format),
         'paymenttype': reverse('paymenttype', request=request, format=format),
         'customer': reverse('customer', request=request, format=format),
-        'Order': reversse('Order', request= request, format=format),
+        'Order': reverse('order', request= request, format=format),
         'department': reverse('department', request=request, format=format),
         'computer': reverse('computer', request=request, format=format),
     })
